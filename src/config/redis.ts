@@ -1,3 +1,10 @@
+/**
+ * @file redis.ts
+ * @description Centralized Redis client configuration.
+ * Implements the Singleton pattern to ensure a shared connection pool 
+ * across the application.
+ */
+
 import Redis from 'ioredis';
 
 const redis = new Redis({

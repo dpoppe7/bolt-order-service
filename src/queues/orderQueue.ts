@@ -1,3 +1,10 @@
+/**
+ * @file orderQueue.ts
+ * @description Message Producer for the Order Processing Queue.
+ * Defines the BullMQ queue and provides a helper to 'dispatch' jobs 
+ * to the Redis-backed message broker.
+ */
+
 import { Queue } from 'bullmq';
 import redis from '../config/redis';
 

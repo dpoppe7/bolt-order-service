@@ -1,3 +1,9 @@
+/**
+ * @file index.ts
+ * @description Entry point for the Order Service API. 
+ * Orchestrates the Express server, middleware, and route registration.
+ */
+
 import express from 'express';
 import redis from './config/redis';
 import { OrderService } from './services/orderService';

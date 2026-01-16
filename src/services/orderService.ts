@@ -1,3 +1,10 @@
+/**
+ * @file orderService.ts
+ * @description Domain logic for order processing.
+ * Handles atomic stock reservations in Redis and coordinates 
+ * background job creation for order persistence.
+ */
+
 import redis from '../config/redis';
 
 export class OrderService {
