@@ -6,6 +6,13 @@
  */
 
 import redis from '../config/redis';
+import { addOrderToQueue } from '../queues/orderQueue';
+
+export interface ReserveStockResponse {
+    success: boolean;
+    message?: string;
+    newStock?: number;
+}
 
 export class OrderService {
     static async reserveStock(productId: string, quantity: number) {
@@ -18,6 +25,9 @@ export class OrderService {
             await redis.incrby(`stock:${productId}`, quantity);
             return { success: false, message: "Insufficient stock" };
         }
+
+        // If stock reservation is successful, enqueue a job to persist the order
+        await addOrderToQueue({ productId, quantity });
 
         return { success: true, newStock };
     }

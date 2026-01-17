@@ -6,7 +6,8 @@
 
 import express from 'express';
 import redis from './config/redis';
-import { OrderService } from './services/orderService';
+import { OrderService, ReserveStockResponse } from './services/orderService';
+import './workers/orderWorker';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -36,7 +37,11 @@ app.post('/order', async (req, res) => {
       return res.status(400).json({ message: 'Invalid productId or quantity' });
     }
 
-    const result = await OrderService.reserveStock(productId, quantity);
+    const result : ReserveStockResponse = await OrderService.reserveStock(productId, quantity);
+
+    if (!result) {
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
 
     if (result.success) {
       res.status(200).json({ message: 'Order placed successfully', newStock: result.newStock });
