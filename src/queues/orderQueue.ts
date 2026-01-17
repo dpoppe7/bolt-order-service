@@ -17,7 +17,7 @@ interface OrderJobsData {
 const connection = redis.options;
 const orderQueue = new Queue('order-queue', { connection });
 
-async function addOrderToQueue(orderData: OrderJobsData) {
+export async function addOrderToQueue(orderData: OrderJobsData) {
     await orderQueue.add('order-job', orderData);
     console.log(`Ticket: Order for product ${orderData.productId} added to the queue.`);
 }
