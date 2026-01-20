@@ -10,6 +10,8 @@ import { OrderService, ReserveStockResponse } from './services/orderService';
 import { worker } from './workers/orderWorker';
 import { orderQueue } from './queues/orderQueue';
 
+const LOG_PREFIX = '[Server 🚀]';
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -35,52 +37,52 @@ app.post('/order', async (req, res) => {
     const { productId, quantity } = req.body;
 
     if (!productId || typeof quantity !== 'number' || quantity <= 0) {
-      return res.status(400).json({ message: 'Invalid productId or quantity' });
+      return res.status(400).json({ message: `${LOG_PREFIX} Invalid productId or quantity` });
     }
 
     const result : ReserveStockResponse = await OrderService.reserveStock(productId, quantity);
 
     if (!result) {
-      return res.status(500).json({ message: "Internal Server Error" });
+      return res.status(500).json({ message: `${LOG_PREFIX} Internal Server Error` });
     }
 
     if (result.success) {
-      res.status(200).json({ message: 'Order placed successfully', newStock: result.newStock });
+      res.status(200).json({ message: `${LOG_PREFIX} Order placed successfully`, newStock: result.newStock });
     } else {
-      res.status(400).json({ message: result.message });
+      res.status(400).json({ message: `${LOG_PREFIX} Order failed: ${result.message}` });
     }
   } catch (error) {
-    console.error('Error reserving stock:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    console.error(`${LOG_PREFIX} Error reserving stock:`, error);
+    res.status(500).json({ message: `${LOG_PREFIX} Internal server error` });
   }
 });
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`${LOG_PREFIX} Server running on port ${port}. Ready to accept orders!`);
 });
 
 // graceful shutdown
 process.on('SIGINT', async () => {
-  console.log('\nGraceful shutdown initiated...');
+  console.log(`${LOG_PREFIX} Graceful shutdown initiated...`);
   
   try {
     // Mark the worker as closed so it will not pick up new jobs, 
-    // andat the same time it will wait for all the current jobs to be processed (or failed).
+    // and at the same time it will wait for all the current jobs to be processed (or failed).
     await worker.close();
-    console.log('Worker closed.');
+    console.log('  Worker closed.');
 
     // Close the queue connection
     await orderQueue.close();
-    console.log('Queue closed.');
+    console.log('  Queue closed.');
 
     // Disconnect Redis client
     await redis.quit();
-    console.log('Redis client disconnected.');
+    console.log('  Redis client disconnected.');
 
-    console.log('Shutdown complete.');
+    console.log(`${LOG_PREFIX} Shutdown complete.`);
     process.exit(0);
   } catch (err) {
-    console.error('Error during graceful shutdown:', err);
+    console.error(`${LOG_PREFIX} Error during graceful shutdown:`, err);
     process.exit(1);
   }
 });

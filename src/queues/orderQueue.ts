@@ -8,6 +8,8 @@
 import { Queue } from 'bullmq';
 import redis from '../config/redis';
 
+const LOG_PREFIX = '[Queue 📩]';
+
 // Interface: Contract for what an order looks like
 interface OrderJobsData {
     productId: string;
@@ -25,7 +27,7 @@ export async function addOrderToQueue(orderData: OrderJobsData) {
             delay: 1000,
         },
     });
-    console.log(`Ticket: Order for product ${orderData.productId} added to the queue.`);
+    console.log(`${LOG_PREFIX} Ticket: Order for ${orderData.productId} added to queue.`);
 }
 
 
