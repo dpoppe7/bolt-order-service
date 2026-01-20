@@ -1,0 +1,24 @@
+// Prisma schema file.
+// It acts as the "Blueprint" for your PostgreSQL database.
+// Learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Data source
+datasource db {
+  provider = "postgresql"
+}
+
+// Generator
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+// Data Model
+model Order {
+  id         Int      @id @default(autoincrement()) // Unique ID for each order, automatically increments
+  productId  String    // ID of item being bought ( "iphone")
+  quantity   Int      // Number of items being bought 
+  //fix: status default completed:
+  status     String   @default("COMPLETED")   // Tracks the lifecycle of the order (PENDING, COMPLETED, FAILED)
+  createdAt  DateTime @default(now()) // Timestamp when the order was created
+}
