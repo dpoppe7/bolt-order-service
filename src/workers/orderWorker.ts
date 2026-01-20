@@ -8,7 +8,7 @@
 import { Worker, Job } from 'bullmq';
 import redis from '../config/redis';
 
-const worker = new Worker('order-queue', async (job: Job) => {
+export const worker = new Worker('order-queue', async (job: Job) => {
     const { productId, quantity } = job.data;
 
     console.log('* Periodic task executed!');
@@ -16,3 +16,11 @@ const worker = new Worker('order-queue', async (job: Job) => {
     console.log('  Picked up job for Product ID:', productId);
     console.log('  Processing order for quantity:', quantity);
 }, { connection: redis.options });
+
+worker.on('completed', (job) => {
+    console.log(`Job with ID ${job.id} has been completed.`);
+});
+
+worker.on('failed', (job, err) => {
+    console.error(`Job with ID ${job?.id} has failed with error: ${err.message}`);
+});

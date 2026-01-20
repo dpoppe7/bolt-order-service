@@ -15,10 +15,16 @@ interface OrderJobsData {
 }
 
 const connection = redis.options;
-const orderQueue = new Queue('order-queue', { connection });
+export const orderQueue = new Queue('order-queue', { connection });
 
 export async function addOrderToQueue(orderData: OrderJobsData) {
-    await orderQueue.add('order-job', orderData);
+    await orderQueue.add('order-job', orderData, { // Backoff setting for automatic retries if the job fails
+        attempts: 3,
+        backoff: { 
+            type: 'exponential', // (prevents "hammering" a database) This means if it fails at 1s, it waits 2s, then 4s...
+            delay: 1000,
+        },
+    });
     console.log(`Ticket: Order for product ${orderData.productId} added to the queue.`);
 }
 
