@@ -9,7 +9,7 @@ datasource db {
 
 // Generator
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../src/generated/prisma"
 }
 
@@ -19,6 +19,6 @@ model Order {
   productId  String    // ID of item being bought ( "iphone")
   quantity   Int      // Number of items being bought 
   //fix: status default completed:
-  status     String   @default("COMPLETED")   // Tracks the lifecycle of the order (PENDING, COMPLETED, FAILED)
+  status     String   @default("COMPLETED")   // Tracks the lifecycle of the order (PENDING, COMPLETED, FAILED), default is COMPLETED
   createdAt  DateTime @default(now()) // Timestamp when the order was created
 }

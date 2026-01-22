@@ -27,3 +27,9 @@ Start the API Worker:
 ```bash
 npm run dev
 ```
+
+### Notes
+[Prisma Generate](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/introduction): Whenever you make changes to your database that are reflected in the Prisma schema, you need to manually re-generate Prisma Client to update the generated code in your output directory:
+```bash
+npx prisma generate
+```
