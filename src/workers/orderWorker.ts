@@ -8,7 +8,7 @@
 import 'dotenv/config';
 import { Worker, Job } from 'bullmq';
 import redis from '../config/redis';
-import { PrismaClient } from '../generated/prisma/client';
+import { PrismaClient } from '../generated/prisma';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
@@ -34,18 +34,42 @@ export const worker = new Worker('order-queue', async (job: Job) => {
     console.log('  📦 Job data:', job.data);
     console.log('  Picked up job for Product ID:', productId);
     console.log('  Processing order for Qty:', quantity);
+     
+    await prisma.$transaction(async (tx) => {
+        // Decrease stock in Postgres
+        const updatedProduct = await tx.product.update({
+            where: { id: productId },
+            data: {
+                stock: {
+                    decrement: quantity,
+                },
+            },
+        });
 
-    // Add order to the postgres database
-    const order = await prisma.order.create({
-        data: {
-            // schema default field: Id (autoincremente)
-            productId: productId,
-            quantity: quantity
-            // schema default field: Status (COMPLETED)
-            // schema default field: Created At (now)
-        },
+        // Safe Check: If stock goes negative, throw error to rollback transaction
+        if (updatedProduct.stock < 0) {
+            throw new Error('Insufficient stock in Postgres during order processing');
+        }
+
+        // Create order record in Postgres database
+        // Add order to the postgres database
+        const order = await tx.order.create({
+            data: {
+                // schema default field: Id (autoincremente)
+                productId: productId,
+                quantity: quantity
+                // schema default field: Status (COMPLETED)
+                // schema default field: Created At (now)
+            },
+        });
+
+        // sync to the redis cache (the updated stock after decrement of product in postres)
+        await redis.set(`stock:${productId}`, updatedProduct.stock.toString());
+
+        // Log order persistence
+        console.log(`${LOG_PREFIX} Order persisted to Postgres with ID: ${order.id}`);
+        console.log(`${LOG_PREFIX} Redis synced to: ${updatedProduct.stock}`);
     });
-    console.log(`${LOG_PREFIX} Order persisted to Postgres with ID: ${order.id}`);
         
 }, { connection: redis.options });
 
@@ -53,6 +77,13 @@ worker.on('completed', (job) => {
     console.log(`${LOG_PREFIX} ✅ Job ${job.id} finished successfully.`);
 });
 
-worker.on('failed', (job, err) => {
+worker.on('failed', async (job, err) => {
     console.error(`${LOG_PREFIX} ❌ Job ${job?.id} failed: ${err.message}`);
+
+    if (job) {
+        const { productId, quantity } = job.data;
+        // Because the DB transaction failed, put the items back into redis since redis substracted from redis stock immediately
+        await redis.incrby(`stock:${productId}`, quantity);
+        console.log(`${LOG_PREFIX} 🔄 Refunded to Redis: Stock rolled back to Redis stock for Product ID: ${productId} by Qty: ${quantity}`);
+    }
 });
