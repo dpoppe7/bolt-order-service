@@ -13,7 +13,7 @@ Click the links below to explore the project's design and setup:
 * **[Core Concepts](./docs/concepts/bullmq.md)**: Deep dive into BullMQ and background jobs.
 * **[Setup Guide](./docs/development/setup.md)**: How to run Bolt in your local environment.
 
-## 🛠️ Tech Stack
+## Tech Stack
 | Layer | Technology | Role |
 | :--- | :--- | :--- |
 | **Runtime** | Node.js (TypeScript) | Non-blocking I/O |

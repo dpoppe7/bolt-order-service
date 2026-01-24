@@ -33,7 +33,8 @@ Bolt follows a **Producer-Consumer** architecture to ensure high availability an
 `src/queue/orderQueue.ts` (Queue configuration)
 
 - The jobs are already safe in Redis.
-- Atomic Operation: BullMQ manages the queue logic, ensuring that if we spin up 5 workers, an order is never processed twice.
+- Atomic Operation: BullMQ manages the queue logic, ensuring that if we spin up 5 workers, an order is never processed twice. Use Case: two people buy at the exact same millisecond, the stock won't "double-count".
+- ACID Compliance: Atomicity, "all or nothing".
 
 #### Background Worker
 **Files:**
