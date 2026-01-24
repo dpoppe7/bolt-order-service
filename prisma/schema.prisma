@@ -14,6 +14,13 @@ generator client {
 }
 
 // Data Model
+model Product {
+  id        String   @id @default(cuid()) // Unique ID for each product
+  name      String   // Name of the product (e.g., "iPhone")
+  stock     Int      // Available stock for the product
+  createdAt DateTime @default(now()) // Timestamp when the product was created
+}
+
 model Order {
   id         Int      @id @default(autoincrement()) // Unique ID for each order, automatically increments
   productId  String    // ID of item being bought ( "iphone")

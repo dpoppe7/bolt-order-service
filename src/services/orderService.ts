@@ -16,6 +16,7 @@ export interface ReserveStockResponse {
 
 export class OrderService {
     static async reserveStock(productId: string, quantity: number) {
+       
         // substracts the amount immediately (atomic)
         const newStock = await redis.decrby(`stock:${productId}`, quantity);
 
@@ -26,9 +27,12 @@ export class OrderService {
             return { success: false, message: "Insufficient stock" };
         }
 
-        // If stock reservation is successful, enqueue a job to persist the order
         await addOrderToQueue({ productId, quantity });
 
-        return { success: true, newStock };
+        return { 
+            success: true,
+            message: "Order queued successfully", 
+            newStock: newStock 
+        };
     }
 }
