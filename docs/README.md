@@ -18,6 +18,6 @@ Click the links below to explore the project's design and setup:
 | :--- | :--- | :--- |
 | **Runtime** | Node.js (TypeScript) | Non-blocking I/O |
 | **API** | Express.js | RESTful Interface |
-| **Queue** | BullMQ & Redis | Message Brokering |
+| **Queue/Cache** | BullMQ & Redis | Atomic Stock Reservation & Message Brokering |
 | **Database** | PostgreSQL | ACID Persistence |
 | **ORM** | Prisma | Schema & Migrations |

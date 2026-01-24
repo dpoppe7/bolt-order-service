@@ -1,9 +1,9 @@
 # ⚖️ Design Trade-offs
 
-### 1. Eventual Consistency vs. Strong Consistency
+### 1. Hybrid Consistency vs. Strong Consistency
 In a flash sale, hitting a database for every click causes a bottleneck. 
-* **Choice**: **Eventual Consistency** for the order record.
-* **Trade-off**: The user gets a "Success" message instantly, even if the database write happens 200ms later.
+* **Choice**: **Hybrid Consistency** for the order record.
+* **Trade-off**: We use Strong Consistency in the Redis Cache for stock levels (to prevent overselling) but Eventual Consistency for the permanent Order Record in Postgres (to keep the API fast).
 
 ### 2. SQL (Postgres) vs. NoSQL (MongoDB)
 * **Choice**: **PostgreSQL**.
@@ -15,6 +15,9 @@ In a flash sale, hitting a database for every click causes a bottleneck.
 
 ### 4. Monolith vs Distributed event-driven System
 **The Monolith Problem:** If the Database is slow or experiences a "spike" in traffic, the entire API hangs. Users see a spinning loading icon, and eventually, the request times out.
+
+### Double Guard
+By checking stock in Redis before queueing, we prevent the "Ghost Order" problem where a user thinks they bought something that is actually out of stock.
 
 * **Choice**: **(Producer-Consumer)**
 This project decoupled the Ingestion (API) from the Persistence (Worker) using BullMQ.

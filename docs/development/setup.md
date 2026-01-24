@@ -22,7 +22,13 @@ npx prisma db push
 npx prisma generate
 ```
 
-### 4. Launch
+### 4. Seed Data
+ynchronize the Source of Truth (Postgres) with the High-Speed Cache (Redis).
+```bash
+npx prisma db seed
+```
+
+### 5. Launch
 Start the API Worker:
 ```bash
 npm run dev
