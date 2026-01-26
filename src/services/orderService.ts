@@ -7,6 +7,21 @@
 
 import redis from '../config/redis';
 import { addOrderToQueue } from '../queues/orderQueue';
+import { PrismaClient } from '../generated/prisma';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { Pool } from 'pg';
+
+// Prisma Client instance for DB operations, this is the "Bridge" to Postgres.
+// Create PostgreSQL connection pool
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+// Create Prisma adapter
+const adapter = new PrismaPg(pool);
+
+// Prisma Client instance with adapter
+const prisma = new PrismaClient({ adapter });
 
 export interface ReserveStockResponse {
     success: boolean;
@@ -15,6 +30,7 @@ export interface ReserveStockResponse {
 }
 
 export class OrderService {
+    // Method: Reserve stock atomically in Redis
     static async reserveStock(productId: string, quantity: number) {
        
         // substracts the amount immediately (atomic)
@@ -34,5 +50,36 @@ export class OrderService {
             message: "Order queued successfully", 
             newStock: newStock 
         };
+    }
+
+    // Additional order-related methods
+        
+    // Method: Get current stock for a specific product from Redis
+    static async getStock_redis(productId: string): Promise<number | null> {
+        const stock = await redis.get(`stock:${productId}`);
+        return stock ? parseInt(stock, 10) : null; // return null if not found
+    }
+
+    // Method: Combines stock info from Redis and product info from DB (e.g., redis: price, name | id and price as stored in db)
+    static async getFullInventory() {
+        // Fetch products from Postgres and stock from Redis in parallel
+        const[dbProducts, redisKeys] = await Promise.all([
+            prisma.product.findMany(), // from Postgres via Prisma
+            redis.keys('stock:*')  // get all stock keys from Redis, returns string
+        ]); 
+
+        // Map redis keys to an Object. stockMap_redis will look like this:  { iphone: 10, ipad: 5, macbook: 0 }
+        const stockMap_redis: { [productId: string]: number } = {};
+        for (const key of redisKeys) {
+            const stockValue = await redis.get(key); // key ='stock:iphone' => stockValue '10'
+            const productName = key.split(':')[1]; // splits the key to get productId, e.g. from 'stock:iphone' take 'iphone' (take [1] right side)
+            stockMap_redis[productName] = stockValue ? parseInt(stockValue, 10) : 0;
+        }
+
+        // Merge: Combine DB product info with Redis stock infor (stockMap)
+        return dbProducts.map(product => ({
+            ...product, // spread operator to copy all fields from product (id, name, price) from Postgres
+            stock: stockMap_redis[product.id] ?? 0 
+        }))
     }
 }

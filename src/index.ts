@@ -4,6 +4,7 @@
  * Orchestrates the Express server, middleware, and route registration.
  */
 
+import cors from 'cors';
 import express from 'express';
 import redis from './config/redis';
 import { OrderService, ReserveStockResponse } from './services/orderService';
@@ -13,6 +14,14 @@ import { orderQueue } from './queues/orderQueue';
 const LOG_PREFIX = '[Server 🚀]';
 
 const app = express();
+// Enables CORS for all routes, allowing cross-origin requests, the browser client would not block the UI.
+app.use(cors());
+//app.use(cors({
+//  origin: '*', // Allow absolutely everything
+//  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//  allowedHeaders: ['Content-Type', 'Authorization']
+//}));
+
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
@@ -23,11 +32,20 @@ app.get('/', (req, res) => {
 
 // GET /health - route that checks Redis connectivity
 app.get('/health', async (req, res) => {
+
   try {
     await redis.ping();
-    res.send('OK');
+    res.send({
+      status: 'online',
+      redis: true,
+      products: await OrderService.getFullInventory()
+    });
   } catch (error) {
-    res.status(500).send('Redis not connected');
+    res.status(500).send({
+      status: 'offline',
+      redis: false,
+      products: []
+    })
   }
 });
 
