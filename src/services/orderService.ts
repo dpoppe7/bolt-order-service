@@ -31,7 +31,7 @@ export interface ReserveStockResponse {
 
 export class OrderService {
     // Method: Reserve stock atomically in Redis
-    static async reserveStock(productId: string, quantity: number) {
+    static async reserveStock(productId: string, quantity: number): Promise<ReserveStockResponse> {
        
         // substracts the amount immediately (atomic)
         const newStock = await redis.decrby(`stock:${productId}`, quantity);
@@ -77,7 +77,7 @@ export class OrderService {
         }
 
         // Merge: Combine DB product info with Redis stock infor (stockMap)
-        return dbProducts.map(product => ({
+        return dbProducts.map(product: Product => ({
             ...product, // spread operator to copy all fields from product (id, name, price) from Postgres
             stock: stockMap_redis[product.id] ?? 0 
         }))
