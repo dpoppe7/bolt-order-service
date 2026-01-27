@@ -7,7 +7,7 @@
 
 import redis from '../config/redis';
 import { addOrderToQueue } from '../queues/orderQueue';
-import { PrismaClient } from '../generated/prisma';
+import { PrismaClient, Product } from '../generated/prisma';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 
@@ -61,7 +61,7 @@ export class OrderService {
     }
 
     // Method: Combines stock info from Redis and product info from DB (e.g., redis: price, name | id and price as stored in db)
-    static async getFullInventory() {
+    static async getFullInventory(): Promise<Product[]> {
         // Fetch products from Postgres and stock from Redis in parallel
         const[dbProducts, redisKeys] = await Promise.all([
             prisma.product.findMany(), // from Postgres via Prisma

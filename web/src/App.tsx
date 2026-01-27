@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import LiquidGlass from 'liquid-glass-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, Smartphone, CheckCircle2, CircleAlert, Loader2 } from 'lucide-react';
-import { HealthResponse, Product } from './types/api';
+import type { HealthResponse, Product } from './types/api';
 
 const BACKEND_URL = window.location.hostname.includes('github.dev') 
   ? `https://${window.location.hostname.replace('-5173', '-3000')}`
@@ -11,7 +11,9 @@ const BACKEND_URL = window.location.hostname.includes('github.dev')
 function App() {
   const [product, setProducts] = useState<Product[]>([]); // initialize as empty array
   const [isLoading, setIsLoading] = useState(true);
-  // 
+
+  // Track status for each specific productId (e.g., { "iphone": "loading" })
+  const [statusMap, setStatusMap] = useState<Record<string, string>>({});
 
   // Running on mount
   useEffect(() => {
@@ -46,25 +48,34 @@ function App() {
 
   // 2. The Order Handler
   const handleOrder = async (productId: string) => {
-    setStatus('loading');
+
+    // Set status for specific productId to loading
+    setStatusMap(prev => ({ ...prev, [productId]: 'loading' })); 
+
     try {
       const response = await fetch(`${BACKEND_URL}/order`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId: 'iphone-15', quantity: 1 }),
+        body: JSON.stringify({ productId, quantity: 1 }),
       });
 
       if (response.ok) {
-        setStatus('success');
-        setStock(prev => Math.max(0, prev - 1)); // Optimistic update
-        setTimeout(() => setStatus('idle'), 3000);
-      } else {
-        setStatus('error');
-        setTimeout(() => setStatus('idle'), 3000);
+        const result = await response.json(); 
+        setStatusMap(prev => ({ ...prev, [productId]: 'success' }));
+
+        // Optimistic: Update specific product in the array
+        setProducts(prevProducts => 
+          prevProducts.map(prod => 
+            prod.id === productId ? { ...prod, stock: result.newStock } : prod
+          )
+        );
+
+        // Reset the status of that productId back to idle after 3 seconds
+        setTimeout(() => setStatusMap(prev => ({ ...prev, [productId]: 'idle' })), 3000);
       }
     } catch (err) {
-      setStatus('error');
-      setTimeout(() => setStatus('idle'), 3000);
+      setStatusMap(prev => ({ ...prev, [productId]: 'error' }));
+      setTimeout(() => setStatusMap(prev => ({ ...prev, [productId]: 'idle' })), 3000);
       console.error("Order failed:", err);
     }
   };
@@ -119,11 +130,11 @@ function App() {
 
                 <button
                   onClick={() => handleOrder(item.id)} // Pass the specific ID now
-                  disabled={status !== 'idle' || item.stock <= 0}
+                  disabled={statusMap[item.id] !== 'idle' || item.stock <= 0}
                   className="relative w-full h-12 rounded-xl bg-white font-bold text-black transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-30"
                 >
                   {/* Your AnimatePresence for the button status goes here */}
-                  {status === 'idle' ? 'Reserve Now' : status}
+                  {statusMap[item.id] === 'idle' ? 'Reserve Now' : statusMap[item.id]}
                 </button>
               </div>
             </LiquidGlass>
@@ -132,7 +143,6 @@ function App() {
       </AnimatePresence>
     </div>
   );
-\
 }
 
 export default App;

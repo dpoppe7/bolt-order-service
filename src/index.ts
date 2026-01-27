@@ -67,7 +67,7 @@ app.post('/order', async (req, res) => {
     if (result.success) {
       res.status(200).json({ message: `${LOG_PREFIX} Order placed successfully`, newStock: result.newStock });
     } else {
-      res.status(400).json({ message: `${LOG_PREFIX} Order failed: ${result.message}` });
+      res.status(400).json({ message: `${LOG_PREFIX} Order failed: ${result.message}` }); // e.g., "Insufficient stock"
     }
   } catch (error) {
     console.error(`${LOG_PREFIX} Error reserving stock:`, error);
