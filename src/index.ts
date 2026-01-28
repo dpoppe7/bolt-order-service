@@ -10,6 +10,8 @@ import redis from './config/redis';
 import { OrderService, ReserveStockResponse } from './services/orderService';
 import { worker } from './workers/orderWorker';
 import { orderQueue } from './queues/orderQueue';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const LOG_PREFIX = '[Server 🚀]';
 
@@ -41,6 +43,7 @@ app.get('/health', async (req, res) => {
       products: await OrderService.getFullInventory()
     });
   } catch (error) {
+    console.error(`${LOG_PREFIX} Health check failed:`, error);
     res.status(500).send({
       status: 'offline',
       redis: false,

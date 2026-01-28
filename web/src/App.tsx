@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import LiquidGlass from 'liquid-glass-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Smartphone, CheckCircle2, CircleAlert, Loader2 } from 'lucide-react';
+import { 
+  Smartphone, Loader2, CheckCircle2, 
+  AlertCircle, Package, Activity, Settings, User 
+} from 'lucide-react';
 import type { HealthResponse, Product } from './types/api';
 
 const BACKEND_URL = window.location.hostname.includes('github.dev') 
@@ -13,7 +16,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   // Track status for each specific productId (e.g., { "iphone": "loading" })
-  const [statusMap, setStatusMap] = useState<Record<string, string>>({});
+  const [statusMap, setStatusMap] = useState<Record<string, 'idle' | 'loading' | 'success' | 'error'>>({});
 
   // Running on mount
   useEffect(() => {
@@ -35,7 +38,8 @@ function App() {
 
       } catch (e) {
         // if the baclkend is not reachable, log the error
-        console.error("Failed to connect to backend:", e);
+        console.error("Failed to connect to backend:", e);        
+      } finally {
         setIsLoading(false);
       }
     }
@@ -72,11 +76,13 @@ function App() {
 
         // Reset the status of that productId back to idle after 3 seconds
         setTimeout(() => setStatusMap(prev => ({ ...prev, [productId]: 'idle' })), 3000);
+      } else {
+        throw new Error();
       }
     } catch (err) {
+      console.error("Order failed:", err);
       setStatusMap(prev => ({ ...prev, [productId]: 'error' }));
       setTimeout(() => setStatusMap(prev => ({ ...prev, [productId]: 'idle' })), 3000);
-      console.error("Order failed:", err);
     }
   };
 
@@ -130,7 +136,7 @@ function App() {
 
                 <button
                   onClick={() => handleOrder(item.id)} // Pass the specific ID now
-                  disabled={statusMap[item.id] !== 'idle' || item.stock <= 0}
+                  disabled={statusMap[item.id] === 'loading' || item.stock <= 0}
                   className="relative w-full h-12 rounded-xl bg-white font-bold text-black transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-30"
                 >
                   {/* Your AnimatePresence for the button status goes here */}

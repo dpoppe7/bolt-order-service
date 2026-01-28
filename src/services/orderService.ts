@@ -15,6 +15,7 @@ import { Pool } from 'pg';
 // Create PostgreSQL connection pool
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  database: 'orderdb',
 });
 
 // Create Prisma adapter
@@ -77,7 +78,7 @@ export class OrderService {
         }
 
         // Merge: Combine DB product info with Redis stock infor (stockMap)
-        return dbProducts.map(product: Product => ({
+        return dbProducts.map((product: Product) => ({
             ...product, // spread operator to copy all fields from product (id, name, price) from Postgres
             stock: stockMap_redis[product.id] ?? 0 
         }))
