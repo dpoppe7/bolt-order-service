@@ -19,6 +19,8 @@ model Product {
   name      String   // Name of the product (e.g., "iPhone")
   stock     Int      // Available stock for the product
   createdAt DateTime @default(now()) // Timestamp when the product was created
+  price     Float    @default(0.0) // Price of the product
+  imageUrl     String?  // Optional field for product image URL
 }
 
 model Order {

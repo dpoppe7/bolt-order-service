@@ -83,4 +83,32 @@ export class OrderService {
             stock: stockMap_redis[product.id] ?? 0 
         }))
     }
+
+    // Method: Get all orders (for admin dashboard - Orders view)
+    static async getAllOrders() {
+        const orders = await prisma.order.findMany({
+            orderBy: { createdAt: 'desc' },
+            take: 50 // Last 50 orders
+        });
+        return orders;
+    }
+
+    // Method: Create a new product (for admin use - Inventory Management)
+    static async createProduct(data: { id: string; name: string; price: number; stock: number; imageUrl?: string; }) {
+        const product = await prisma.product.create({
+            data: {
+                id: data.id,
+                name: data.name,
+                price: data.price,
+                stock: data.stock,
+                imageUrl: data.imageUrl
+            }
+        });
+
+        // Initialize stock in Redis
+        await redis.set(`stock:${data.id}`, data.stock.toString());
+
+        return product;
+    }
+
 }

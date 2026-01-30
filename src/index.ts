@@ -78,6 +78,45 @@ app.post('/order', async (req, res) => {
   }
 });
 
+// GET /admin/orders - route to create a new product (for admin use)
+app.get('/admin/orders', async (req, res) => {
+  try {
+    const orders = await OrderService.getAllOrders();
+
+    // Transform orders to match frontend expectations
+    const formattedOrders = orders.map(order => ({
+      id: order.id.toString(),
+      productId: order.productId,
+      quantity: order.quantity,
+      status: order.status.toLowerCase(),
+      createdAt: order.createdAt.toISOString()
+    }));
+    
+    res.json({ orders: formattedOrders });
+  } catch (error) {
+    console.error(`${LOG_PREFIX} Error fetching orders:`, error);
+    res.status(500).json({ message: 'Failed to fetch orders' });
+  }
+});
+
+app.post('/admin/products', async (req, res) => {
+  const { id, name, price, stock, imageUrl } = req.body;
+
+  try {
+    const product = await OrderService.createProduct({
+      id,
+      name,
+      price: parseFloat(price),
+      stock: parseInt(stock),
+      imageUrl
+    });
+    res.status(201).json(product); 
+  } catch (error) {
+    console.error(`${LOG_PREFIX} Error creating product:`, error);
+    res.status(400).json({ error: "Failed to create product. ID might already exist." });
+  }
+});
+
 app.listen(port, () => {
   console.log(`${LOG_PREFIX} Server running on port ${port}. Ready to accept orders!`);
 });

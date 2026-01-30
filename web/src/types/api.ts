@@ -4,6 +4,13 @@
  * These are objects that index.ts (the backend) sends and the web client (App.tsx) can import.
  */
 
+// Response from /health endpoint (the UI get this values on load)
+export interface HealthResponse {
+    status: 'online' | 'offline'; // server status
+    redis: boolean; // is redis connected
+    products: Product[]; // list of products with stock info
+}
+
 // Product structure as represented in the backend (Prisma schema)
 export interface Product {
     id: string; // matches prisma schema id
@@ -22,12 +29,18 @@ export interface OrderRequest {
 export interface OrderResponse {
     newStock?: number; // updated stock after order is placed
     message: string;
-    oderId?: string; // order identifier: matches prisma order if (default autoincrement)
+    orderId?: string; // order identifier: matches prisma order if (default autoincrement)
 }
 
-// Response from /health endpoint (the UI get this values on load)
-export interface HealthResponse {
-    status: 'online' | 'offline'; // server status
-    redis: boolean; // is redis connected
-    products: Product[]; // list of products with stock info
+export interface Order {
+  id: string;
+  productId: string;
+  quantity: number;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  createdAt: string;
 }
+
+export interface AdminOrdersResponse {
+  orders: Order[];
+}
+

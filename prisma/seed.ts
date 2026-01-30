@@ -41,7 +41,8 @@ async function main() {
         });
 
         // Also set initial stock in Redis for fast access, using the same stock value
-        await redis.set(`stock:${product.id}`, product.stock);
+        await redis.set(`stock:${product.id}`, product.stock.toString());
+        console.log(`Synced ${product.id} stock to Redis: ${product.stock}`);
     }
 
     console.log('✅ Database seeded with initial products.');
