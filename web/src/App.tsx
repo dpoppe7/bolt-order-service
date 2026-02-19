@@ -12,7 +12,7 @@ function App() {
   const [view, setView] = useState<'customer' | 'admin'>('customer');
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div className="min-h-screen w-full bg-gradient-app">
       {/* Animated background blobs */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/20 blur-[120px] animate-pulse" />
