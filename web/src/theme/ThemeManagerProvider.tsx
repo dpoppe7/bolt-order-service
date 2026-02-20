@@ -35,7 +35,7 @@ const flattenThemeTokens = (
       flattenThemeTokens(value as Record<string, unknown>, name, target);
     } else {
       target.setProperty(
-        `--${name.replace(/([A-Z])/g, '-$1').toLowerCase()}`,
+        `--${name.replace(/([A-Z])/g, '-$1').toLowerCase()}`, // convert camelCase to kebab-case for CSS variable naming: (blueGlow -> blue-glow)
         value as string
       );
     }

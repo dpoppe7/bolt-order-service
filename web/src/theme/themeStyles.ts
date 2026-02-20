@@ -18,9 +18,9 @@ export interface Theme {
   };
   accent: {
     blue: string;
-    purple: string;
+    orange: string;
     blueGlow: string;
-    purpleGlow: string;
+    orangeGlow: string;
   };
   status: {
     success: string;
@@ -49,10 +49,10 @@ export const lightTheme: Theme = {
     inverse: '#ffffff',
   },
   accent: {
-    blue: '#3b82f6',
-    purple: '#9333ea',
+    blue: '#7e8fdd',
+    orange: '#E2A17B',
     blueGlow: 'rgba(59,130,246,0.25)',
-    purpleGlow: 'rgba(147,51,234,0.25)',
+    orangeGlow: 'rgba(147,51,234,0.25)',
   },
   status: {
     success: '#10b981',
@@ -69,22 +69,22 @@ export const lightTheme: Theme = {
 
 export const darkTheme: Theme = {
   background: {
-    primary: '#020617',    
-    secondary: '#0f172a',  
+    primary: '#0a0a0a',    
+    secondary: '#171415',  
     surface: '#1e293b',    
     overlay: 'rgba(15,23,42,0.85)',
   },
   text: {
     primary: '#f8fafc',
     secondary: '#cbd5e1',
-    muted: '#64748b',
+    muted: '#3e3b43',
     inverse: '#0f172a',
   },
   accent: {
-    blue: '#3b82f6',
-    purple: '#9333ea',
-    blueGlow: 'rgba(59,130,246,0.2)',
-    purpleGlow: 'rgba(147,51,234,0.2)',
+    blue: '#677BD8',
+    orange: '#E2A17B',
+    blueGlow: 'rgba(103,123,216,0.2)',
+    orangeGlow: 'rgba(147,51,234,0.2)',
   },
   status: {
     success: '#10b981',
@@ -94,7 +94,7 @@ export const darkTheme: Theme = {
   },
   border: {
     default: '#1e293b',
-    subtle: '#0f172a',
+    subtle: '#312B2D',
     focus: '#3b82f6',
   },
 };

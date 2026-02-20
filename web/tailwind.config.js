@@ -4,6 +4,10 @@ export default {
   darkMode: ['attribute', '[data-theme="dark"]'], // ThemeManagerProvider
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        jost: ['Jost', 'sans-serif'],
+      },
       colors: {
         // Usage: bg-theme-primary, border-theme-default...
         theme: {
@@ -18,7 +22,7 @@ export default {
           'text-inverse':  'var(--text-inverse)',
 
           'accent-blue':   'var(--accent-blue)',
-          'accent-purple': 'var(--accent-purple)',
+          'accent-orange': 'var(--accent-orange)',
 
           'success':       'var(--status-success)',
           'warning':       'var(--status-warning)',

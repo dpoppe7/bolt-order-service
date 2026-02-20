@@ -11,6 +11,7 @@ export const ThemeSettings = {
   SYSTEM: 'system',
 } as const;
 
+// union of strings ('light' | 'dark' | 'system')
 export type ThemeSettingValue = typeof ThemeSettings[keyof typeof ThemeSettings];
 
 export interface ThemeManagerState {
