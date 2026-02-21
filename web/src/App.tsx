@@ -23,29 +23,31 @@ function App() {
       <NavBar view={view} onViewChange={setView} />
 
       {/* Main Content */}
-      <AnimatePresence mode="wait">
-        {view === 'customer' ? (
-          <motion.div
-            key="customer"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <CustomerView backendUrl={BACKEND_URL} />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="admin"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <AdminDashboard backendUrl={BACKEND_URL} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
+        <AnimatePresence mode="wait">
+          {view === 'customer' ? (
+            <motion.div
+              key="customer"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <CustomerView backendUrl={BACKEND_URL} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="admin"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <AdminDashboard backendUrl={BACKEND_URL} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </main>
     </div>
   );
 }

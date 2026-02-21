@@ -37,20 +37,20 @@ export interface Theme {
 
 export const lightTheme: Theme = {
   background: {
-    primary: '#ffffff',
-    secondary: '#f8fafc',
+    primary: '#faefee',
+    secondary: '#F0E7E2',
     surface: '#f1f5f9',
     overlay: 'rgba(255,255,255,0.85)',
   },
   text: {
     primary: '#0f172a',
     secondary: '#334155',
-    muted: '#94a3b8',
+    muted: '#7E7A79',
     inverse: '#ffffff',
   },
   accent: {
     blue: '#7e8fdd',
-    orange: '#E2A17B',
+    orange: '#E48B58',
     blueGlow: 'rgba(59,130,246,0.25)',
     orangeGlow: 'rgba(147,51,234,0.25)',
   },
@@ -62,7 +62,7 @@ export const lightTheme: Theme = {
   },
   border: {
     default: '#e2e8f0',
-    subtle: '#f1f5f9',
+    subtle: '#D2C5C1',
     focus: '#3b82f6',
   },
 };
@@ -77,12 +77,12 @@ export const darkTheme: Theme = {
   text: {
     primary: '#f8fafc',
     secondary: '#cbd5e1',
-    muted: '#3e3b43',
+    muted: '#B2AEAF',
     inverse: '#0f172a',
   },
   accent: {
     blue: '#677BD8',
-    orange: '#E2A17B',
+    orange: '#E48B58',
     blueGlow: 'rgba(103,123,216,0.2)',
     orangeGlow: 'rgba(147,51,234,0.2)',
   },

@@ -36,7 +36,7 @@ export default {
       },
       boxShadow: {
         'glow-blue':   '0 0 30px var(--accent-blue-glow)',
-        'glow-purple': '0 0 30px var(--accent-purple-glow)',
+        'glow-orange': '0 0 30px var(--accent-orange-glow)',
       },
       backgroundImage: {
         'gradient-app': 'linear-gradient(135deg, var(--background-primary), var(--background-secondary))',

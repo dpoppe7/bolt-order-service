@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useContext } from 'react';
-import { Sun, Moon, LayoutDashboard, ShoppingBag } from 'lucide-react';
+import { Sun, Moon, LayoutDashboard, ShoppingBag, Menu } from 'lucide-react';
 import { ThemeManagerContext } from '../theme/ThemeManagerContext';
 import { ThemeSettings } from '../theme/ThemeManagerContext';
 import { ThemeManagerProvider } from '../theme/ThemeManagerProvider';
@@ -12,22 +12,27 @@ interface NavbarProps {
 
 export function NavBar({view, onViewChange}: NavbarProps) {
     const {isDark, changeThemeSettings} = useContext(ThemeManagerContext);
+    const [isOpen, setIsOpen] = useState(false);
+
+    const handleClick = () => {
+        setIsOpen(!isOpen);
+    }
 
     return (
     <header className="fixed top-0 left-0 w-full z-50 bg-theme-bg-primary backdrop-blur-xl">
-        <div className="justify-between flex items-center max-w-7xl mx-auto px-4 py-3">
+        <div className="justify-between flex items-center max-w-7xl mx-auto px-4 sm:px-6 py-4 ">
             {/* Logo/Title */}
-            <div className="font-jost text-lg font-semibold uppercase text-theme-text-primary">
+            <div className="font-jost text-lg font-medium uppercase text-theme-text-primary">
                 Bolt Order Service
             </div>
 
             {/* Desktop View */}
-            <div className="hidden md:flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-4">
                 
                 {/* Dark/Light Toggle */}
                 <button 
                     onClick= {() => changeThemeSettings(isDark ? ThemeSettings.LIGHT : ThemeSettings.DARK)}
-                    className="p-2 rounded-full text-theme-text-primary hover:text-theme-text-secondary transition-colors"
+                    className="p-2 rounded-full text-theme-text-muted hover:text-theme-text-primary transition-colors"
                 >
                     {isDark ? <Sun size={20}/>: <Moon size={20}/>}
                 </button>
@@ -39,26 +44,68 @@ export function NavBar({view, onViewChange}: NavbarProps) {
                         className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
                         view === 'customer'
                             ? 'bg-theme-accent-blue text-white'
-                            : 'text-theme-text-muted hover:text-white'
+                            : 'text-theme-text-muted hover:text-theme-text-primary '
                         }`}
                     >
                         <ShoppingBag size={18} />
-                        <span className="text-sm font-medium">Store</span>
+                        <span className="text-sm font-medium uppercase">Store</span>
                     </button>
                     <button
                         onClick={() => onViewChange('admin')}
                         className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
                         view === 'admin'
-                            ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/50'
-                            : 'text-slate-400 hover:text-white'
+                            ? 'bg-theme-accent-orange text-white'
+                            : 'text-theme-text-muted hover:text-theme-text-primary'
                         }`}
                     >
                         <LayoutDashboard size={18} />
-                        <span className="text-sm font-medium">Admin</span>
+                        <span className="text-sm font-medium uppercase">Admin</span>
                     </button>
                 </div>
             </div>
+
+            {/* Hamburger button - Mobile View */}
+            <button
+                onClick={handleClick}
+                className='md:hidden text-theme-text-primary'
+            >
+                <Menu size={20} />
+            </button>
         </div>
+
+            {/* Hamburger content */}
+            { isOpen && (
+                <div className="md:hidden bg-theme-bg-primary px-6 py-4 flex flex-col gap-4  ">
+                    <button 
+                        onClick= {() => changeThemeSettings(isDark ? ThemeSettings.LIGHT : ThemeSettings.DARK)}
+                        className="px-4 rounded-full text-theme-text-muted hover:text-theme-text-primary transition-colors"
+                    >
+                        {isDark ? <Sun size={20}/>: <Moon size={20}/>}
+                    </button>
+                    <button
+                        onClick={() => onViewChange('customer')}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
+                        view === 'customer'
+                            ? 'bg-theme-accent-blue text-white'
+                            : 'text-theme-text-muted hover:text-theme-text-primary '
+                        }`}
+                    >
+                        <ShoppingBag size={18} />
+                        <span className="text-sm font-medium uppercase">Store</span>
+                    </button>
+                    <button
+                        onClick={() => onViewChange('admin')}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
+                        view === 'admin'
+                            ? 'bg-theme-accent-orange text-white'
+                            : 'text-theme-text-muted hover:text-theme-text-primary'
+                        }`}
+                    >
+                        <LayoutDashboard size={18} />
+                        <span className="text-sm font-medium uppercase">Admin</span>
+                    </button>
+                </div>
+            )}
     </header>
     )
 };
