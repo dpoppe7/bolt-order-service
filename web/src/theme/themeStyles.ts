@@ -44,8 +44,8 @@ export const lightTheme: Theme = {
   },
   text: {
     primary: '#0f172a',
-    secondary: '#334155',
-    muted: '#7E7A79',
+    secondary: '#8D8A8A',
+    muted: '#6E6B6A',
     inverse: '#ffffff',
   },
   accent: {
@@ -76,8 +76,8 @@ export const darkTheme: Theme = {
   },
   text: {
     primary: '#f8fafc',
-    secondary: '#cbd5e1',
-    muted: '#B2AEAF',
+    secondary: '#9A9A9A',
+    muted: '#C0C0C0',
     inverse: '#0f172a',
   },
   accent: {

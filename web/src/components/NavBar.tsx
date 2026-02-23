@@ -1,28 +1,46 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useContext } from 'react';
 import { Sun, Moon, LayoutDashboard, ShoppingBag, Menu } from 'lucide-react';
 import { ThemeManagerContext } from '../theme/ThemeManagerContext';
 import { ThemeSettings } from '../theme/ThemeManagerContext';
-import { ThemeManagerProvider } from '../theme/ThemeManagerProvider';
 
 interface NavbarProps {
   view: 'customer' | 'admin';
   onViewChange: (view: 'customer' | 'admin') => void;
+  onHeightChange: (height: number) => void; // exporting scroll height dynamically via ref
 };
 
-export function NavBar({view, onViewChange}: NavbarProps) {
+export function NavBar({view, onViewChange, onHeightChange}: NavbarProps) {
     const {isDark, changeThemeSettings} = useContext(ThemeManagerContext);
     const [isOpen, setIsOpen] = useState(false);
+    const headerRef = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        if (!headerRef.current) return;
+
+        // Measure height and report it. It watches the physical boundaries of an element. 
+        // The moment a single pixel changes in the Navbar's height, it triggers a callback.
+        const observer = new ResizeObserver(() => {
+            if (headerRef.current) {
+                onHeightChange(headerRef.current.offsetHeight);
+            }
+        });
+
+        observer.observe(headerRef.current);
+
+        // cleanup: prevents memory leak, when the user leaves the page, the browser stops watching the element.
+        return () => observer.disconnect();
+    }, []);
 
     const handleClick = () => {
         setIsOpen(!isOpen);
     }
 
     return (
-    <header className="fixed top-0 left-0 w-full z-50 bg-theme-bg-primary backdrop-blur-xl">
-        <div className="justify-between flex items-center max-w-7xl mx-auto px-4 sm:px-6 py-4 ">
+    <header ref={headerRef} className="fixed top-0 left-0 w-full z-50 bg-theme-bg-primary">
+        <div className="justify-between flex items-center max-w-7xl mx-auto px-4 sm:px-6 py-3 ">
             {/* Logo/Title */}
-            <div className="font-jost text-lg font-medium uppercase text-theme-text-primary">
+            <div className="font-jost text-lg font-medium uppercase text-theme-text-secondary">
                 Bolt Order Service
             </div>
 
@@ -34,7 +52,7 @@ export function NavBar({view, onViewChange}: NavbarProps) {
                     onClick= {() => changeThemeSettings(isDark ? ThemeSettings.LIGHT : ThemeSettings.DARK)}
                     className="p-2 rounded-full text-theme-text-muted hover:text-theme-text-primary transition-colors"
                 >
-                    {isDark ? <Sun size={20}/>: <Moon size={20}/>}
+                    {isDark ? <Sun size={24}/>: <Moon size={24}/>}
                 </button>
 
                 {/* View Toggle */}
@@ -69,7 +87,7 @@ export function NavBar({view, onViewChange}: NavbarProps) {
                 onClick={handleClick}
                 className='md:hidden text-theme-text-primary'
             >
-                <Menu size={20} />
+                <Menu size={24} />
             </button>
         </div>
 
@@ -80,7 +98,7 @@ export function NavBar({view, onViewChange}: NavbarProps) {
                         onClick= {() => changeThemeSettings(isDark ? ThemeSettings.LIGHT : ThemeSettings.DARK)}
                         className="px-4 rounded-full text-theme-text-muted hover:text-theme-text-primary transition-colors"
                     >
-                        {isDark ? <Sun size={20}/>: <Moon size={20}/>}
+                        {isDark ? <Sun size={24}/>: <Moon size={24}/>}
                     </button>
                     <button
                         onClick={() => onViewChange('customer')}

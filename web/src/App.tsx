@@ -10,6 +10,7 @@ const BACKEND_URL = window.location.hostname.includes('github.dev')
 
 function App() {
   const [view, setView] = useState<'customer' | 'admin'>('customer');
+  const [navHeight, setNavHeight] = useState(0);
 
   return (
     <div className="min-h-screen w-full bg-gradient-app">
@@ -20,10 +21,13 @@ function App() {
       </div>
       
       {/* Navigation Bar */}
-      <NavBar view={view} onViewChange={setView} />
+      <NavBar view={view} onViewChange={setView} onHeightChange={setNavHeight} />
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12">
+      <main 
+        className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-12"
+        style={{ paddingTop: navHeight }}>
+
         <AnimatePresence mode="wait">
           {view === 'customer' ? (
             <motion.div
@@ -33,7 +37,7 @@ function App() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
             >
-              <CustomerView backendUrl={BACKEND_URL} />
+              <CustomerView backendUrl={BACKEND_URL} navHeight={navHeight} />
             </motion.div>
           ) : (
             <motion.div
