@@ -7,7 +7,8 @@ export interface Theme {
   background: {
     primary: string;
     secondary: string; 
-    surface: string;    
+    surface: string;  
+    surfaceMuted: string;  
     overlay: string;
   };
   text: {
@@ -17,10 +18,10 @@ export interface Theme {
     inverse: string;
   };
   accent: {
-    blue: string;
-    orange: string;
-    blueGlow: string;
-    orangeGlow: string;
+    primary: string;
+    secondary: string;
+    primaryMuted: string;
+    secondaryMuted: string;
   };
   status: {
     success: string;
@@ -37,9 +38,10 @@ export interface Theme {
 
 export const lightTheme: Theme = {
   background: {
-    primary: '#faefee',
+    primary: '#E8DFDE',
     secondary: '#F0E7E2',
-    surface: '#f1f5f9',
+    surface: '#E0D5CF',
+    surfaceMuted: '#D7CCC8',
     overlay: 'rgba(255,255,255,0.85)',
   },
   text: {
@@ -49,16 +51,16 @@ export const lightTheme: Theme = {
     inverse: '#ffffff',
   },
   accent: {
-    blue: '#7e8fdd',
-    orange: '#E48B58',
-    blueGlow: 'rgba(59,130,246,0.25)',
-    orangeGlow: 'rgba(147,51,234,0.25)',
+    primary: '#7e8fdd',
+    secondary: '#E48B58',
+    primaryMuted: '#5164BD',
+    secondaryMuted: '#AF6338',
   },
   status: {
-    success: '#10b981',
-    warning: '#f59e0b',
-    error: '#ef4444',
-    info: '#3b82f6',
+    success: '#059669',
+    warning: '#d97706',
+    error: '#dc2626',
+    info: '#2563eb',
   },
   border: {
     default: '#e2e8f0',
@@ -71,7 +73,8 @@ export const darkTheme: Theme = {
   background: {
     primary: '#0a0a0a',    
     secondary: '#171415',  
-    surface: '#1e293b',    
+    surface: '#1F1C1D',    
+    surfaceMuted: '#27272a',
     overlay: 'rgba(15,23,42,0.85)',
   },
   text: {
@@ -81,13 +84,13 @@ export const darkTheme: Theme = {
     inverse: '#0f172a',
   },
   accent: {
-    blue: '#677BD8',
-    orange: '#E48B58',
-    blueGlow: 'rgba(103,123,216,0.2)',
-    orangeGlow: 'rgba(147,51,234,0.2)',
+    primary: '#677BD8',
+    secondary: '#E48B58',
+    primaryMuted: '#5164BD',
+    secondaryMuted: '#AF6338',
   },
   status: {
-    success: '#10b981',
+    success: '#16a34a',
     warning: '#f59e0b',
     error: '#ef4444',
     info: '#3b82f6',

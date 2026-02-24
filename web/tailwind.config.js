@@ -14,6 +14,7 @@ export default {
           'bg-primary':    'var(--background-primary)',
           'bg-secondary':  'var(--background-secondary)',
           'bg-surface':    'var(--background-surface)',
+          'bg-surface-muted':    'var(--background-surface-muted)',
           'bg-overlay':    'var(--background-overlay)',
 
           'text-primary':  'var(--text-primary)',
@@ -21,8 +22,10 @@ export default {
           'text-muted':    'var(--text-muted)',
           'text-inverse':  'var(--text-inverse)',
 
-          'accent-blue':   'var(--accent-blue)',
-          'accent-orange': 'var(--accent-orange)',
+          'accent-primary':   'var(--accent-primary)',
+          'accent-secondary': 'var(--accent-secondary)',
+          'accent-primary-muted':   'var(--accent-primary-muted)',
+          'accent-secondary-muted': 'var(--accent-secondary-muted)',
 
           'success':       'var(--status-success)',
           'warning':       'var(--status-warning)',
@@ -33,10 +36,6 @@ export default {
           'border-subtle': 'var(--border-subtle)',
           'border-focus':  'var(--border-focus)',
         },
-      },
-      boxShadow: {
-        'glow-blue':   '0 0 30px var(--accent-blue-glow)',
-        'glow-orange': '0 0 30px var(--accent-orange-glow)',
       },
       backgroundImage: {
         'gradient-app': 'linear-gradient(135deg, var(--background-primary), var(--background-secondary))',

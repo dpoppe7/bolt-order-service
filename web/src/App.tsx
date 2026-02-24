@@ -1,7 +1,7 @@
 import { useState} from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import CustomerView from './components/CustomerView.tsx';
-import AdminDashboard from './components/AdminDashboard.tsx'
+import CustomerView from './components/Customer/CustomerView.tsx';
+import AdminDashboard from './components/Admin/AdminDashboard.tsx'
 import { NavBar } from './components/NavBar.tsx';
 
 const BACKEND_URL = window.location.hostname.includes('github.dev') 

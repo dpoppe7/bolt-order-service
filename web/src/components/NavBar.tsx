@@ -61,7 +61,7 @@ export function NavBar({view, onViewChange, onHeightChange}: NavbarProps) {
                         onClick={() => onViewChange('customer')}
                         className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
                         view === 'customer'
-                            ? 'bg-theme-accent-blue text-white'
+                            ? 'bg-theme-accent-primary text-white'
                             : 'text-theme-text-muted hover:text-theme-text-primary '
                         }`}
                     >
@@ -72,7 +72,7 @@ export function NavBar({view, onViewChange, onHeightChange}: NavbarProps) {
                         onClick={() => onViewChange('admin')}
                         className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
                         view === 'admin'
-                            ? 'bg-theme-accent-orange text-white'
+                            ? 'bg-theme-accent-secondary text-white'
                             : 'text-theme-text-muted hover:text-theme-text-primary'
                         }`}
                     >
@@ -104,7 +104,7 @@ export function NavBar({view, onViewChange, onHeightChange}: NavbarProps) {
                         onClick={() => onViewChange('customer')}
                         className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
                         view === 'customer'
-                            ? 'bg-theme-accent-blue text-white'
+                            ? 'bg-theme-accent-primary text-white'
                             : 'text-theme-text-muted hover:text-theme-text-primary '
                         }`}
                     >
@@ -115,7 +115,7 @@ export function NavBar({view, onViewChange, onHeightChange}: NavbarProps) {
                         onClick={() => onViewChange('admin')}
                         className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${
                         view === 'admin'
-                            ? 'bg-theme-accent-orange text-white'
+                            ? 'bg-theme-accent-secondary text-white'
                             : 'text-theme-text-muted hover:text-theme-text-primary'
                         }`}
                     >
