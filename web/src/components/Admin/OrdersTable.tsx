@@ -4,16 +4,20 @@ import type { Order } from './AdminDashboard';
 
 // Component: Orders Table
 export function OrdersTable({orders}: {orders: Order[]}) {
+  const tableStyles = {
+    tHead: 'px-6 py-4 text-xs font-semibold text-theme-text-muted uppercase tracking-wider'
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
-      className="bg-slate-800/80 backdrop-blur-xl border border-slate-700 rounded-2xl overflow-hidden"
+      className="bg-theme-bg-secondary backdrop-blur-xl border-2 border-theme-border-subtle rounded-3xl overflow-hidden"
     >
-      <div className="p-6 border-b border-slate-700">
-        <h2 className="text-xl font-bold text-white flex items-center gap-2">
-          <TrendingUp size={20} className="text-purple-400" />
+      <div className="p-6 border-b border-theme-text-secondary">
+        <h2 className="text-md font-semibold text-theme-text-primary flex items-center gap-3 uppercase">
+          <TrendingUp size={24} className="text-theme-text-secondary" />
           Recent Orders
         </h2>
       </div>
@@ -21,21 +25,21 @@ export function OrdersTable({orders}: {orders: Order[]}) {
       <div className="overflow-x-auto">
         {orders.length === 0 ? (
           <div className="p-12 text-center">
-            <AlertCircle size={48} className="text-slate-600 mx-auto mb-4" />
-            <p className="text-slate-400">No orders yet</p>
+            <AlertCircle size={48} className="text-theme-text-secondary mx-auto mb-4" />
+            <p className="text-theme-text-muted">No orders yet</p>
           </div>
         ) : (
           <table className="w-full">
             <thead>
-              <tr className="bg-slate-900/50 text-left">
-                <th className="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Order ID</th>
-                <th className="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Product</th>
-                <th className="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Quantity</th>
-                <th className="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-xs font-semibold text-slate-400 uppercase tracking-wider">Created</th>
+              <tr className="bg-theme-bg-surface-muted text-left">
+                <th className={tableStyles.tHead}>Order ID</th>
+                <th className={tableStyles.tHead}>Product</th>
+                <th className={tableStyles.tHead}>Quantity</th>
+                <th className={tableStyles.tHead}>Status</th>
+                <th className={tableStyles.tHead}>Created</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-700">
+            <tbody className="divide-y divide-theme-border-subtle">
               {orders.map((order, index) => (
                 <OrderRow key={order.id} order={order} index={index} />
               ))}
@@ -54,17 +58,17 @@ interface OrderRowProps {
 
 function OrderRow({ order, index }: OrderRowProps) {
   const statusColors = {
-    pending: 'bg-yellow-600/20 text-yellow-400 border-yellow-600/30',
-    processing: 'bg-blue-600/20 text-blue-400 border-blue-600/30',
-    completed: 'bg-green-600/20 text-green-400 border-green-600/30',
-    failed: 'bg-red-600/20 text-red-400 border-red-600/30'
+    pending: 'bg-yellow-600/20 text-theme-warning border-yellow-600/30',
+    processing: 'bg-blue-600/20 text-theme-info border-blue-600/30',
+    completed: 'bg-green-600/20 text-theme-success border-green-600/30',
+    failed: 'bg-red-600/20 text-theme-error border-red-600/30'
   };
 
   const statusIcons = {
-    pending: <Clock size={14} />,
-    processing: <Loader2 size={14} className="animate-spin" />,
-    completed: <CheckCircle2 size={14} />,
-    failed: <XCircle size={14} />
+    pending: <Clock size={18} />,
+    processing: <Loader2 size={18} className="animate-spin" />,
+    completed: <CheckCircle2 size={18} />,
+    failed: <XCircle size={18} />
   };
 
   return (
@@ -72,27 +76,32 @@ function OrderRow({ order, index }: OrderRowProps) {
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="hover:bg-slate-700/50 transition-colors"
+      className="hover:bg-theme-bg-surface transition-colors"
     >
+      {/* Order ID */}
       <td className="px-6 py-4">
-        <code className="text-sm text-slate-300 bg-slate-900/50 px-2 py-1 rounded">
+        <code className="text-base text-theme-text-primary bg-theme-bg-surface-muted px-2 py-1 rounded-full">
           {order.id}
         </code>
       </td>
+      {/* Product ID */}
       <td className="px-6 py-4">
-        <span className="text-white font-medium">{order.productId}</span>
+        <span className="text-theme-text-primary font-medium">{order.productId}</span>
       </td>
+      {/* Order Quantity */}
       <td className="px-6 py-4">
-        <span className="text-slate-300">{order.quantity}</span>
+        <span className="text-theme-text-primary">{order.quantity}</span>
       </td>
+      {/* Order Status */}
       <td className="px-6 py-4">
-        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${statusColors[order.status]}`}>
+        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-medium border ${statusColors[order.status]}`}>
           {statusIcons[order.status]}
           {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
         </span>
       </td>
+      {/* Order Created At */}
       <td className="px-6 py-4">
-        <span className="text-sm text-slate-400">
+        <span className="text-theme-text-muted">
           {new Date(order.createdAt).toLocaleString()}
         </span>
       </td>

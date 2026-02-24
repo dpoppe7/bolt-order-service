@@ -57,8 +57,8 @@ export const lightTheme: Theme = {
     secondaryMuted: '#AF6338',
   },
   status: {
-    success: '#059669',
-    warning: '#d97706',
+    success: '#038B47',
+    warning: '#E08010',
     error: '#dc2626',
     info: '#2563eb',
   },

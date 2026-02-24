@@ -110,7 +110,7 @@ function AdminDashboard({ backendUrl }: AdminDashboardProps) {
         </motion.div>
 
         {/* View Controls */}
-        <div className="flex gap-2 mb-8">
+        <div className="flex gap-2 mb-16">
           {
             tabs.map((tab) => (
               <button
@@ -118,7 +118,7 @@ function AdminDashboard({ backendUrl }: AdminDashboardProps) {
                 className={`flex-1 py-3 px-6 rounded-2xl text-sm font-semibold uppercase transition-all ${
                   activeTab === tab.id
                     ? 'bg-theme-accent-secondary text-white shadow-md shadow-theme-accent-secondary-muted'
-                    : 'bg-theme-bg-surface text-theme-text-muted hover:text-white hover:bg-theme-bg-surface-muted border-2 border-theme-border-subtle'
+                    : 'bg-theme-bg-surface text-theme-text-muted hover:text-theme-text-primary hover:bg-theme-bg-surface-muted border-2 border-theme-border-subtle'
                 }`}
               >
                 {tab.label}
@@ -166,7 +166,5 @@ function AdminDashboard({ backendUrl }: AdminDashboardProps) {
     </div>
   );
 }
-
-
 
 export default AdminDashboard;

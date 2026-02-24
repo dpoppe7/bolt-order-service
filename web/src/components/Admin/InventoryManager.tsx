@@ -3,15 +3,14 @@ import { Package } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { Product } from './AdminDashboard';
 
-
 // Component: Inventory Manager 
 export function InventoryManager({ backendUrl }: { backendUrl: string }) {
   const [products, setProducts] = useState<Product[]>([]);
   const [showForm, setShowForm] = useState(false);
   
-  // 1. Fetch products specifically for this view
+  // Fetch products specifically for this view
   const loadProducts = async () => {
-    const res = await fetch(`${backendUrl}/health`); // Or a dedicated /products route
+    const res = await fetch(`${backendUrl}/health`);
     const data = await res.json();
     setProducts(data.products);
   };
@@ -103,25 +102,25 @@ interface StatCardProps {
 
 export function StatCard({ title, value, icon, color }: StatCardProps) {
   const colors = {
-    blue: 'border-theme-info text-theme-info',
-    yellow: 'border-theme-warning text-theme-warning',
-    green: 'border-theme-success text-theme-success',
-    red: 'border-theme-error text-theme-error'
+    blue: 'from-blue-600/30 to-blue-600/5 border-theme-info text-theme-info',
+    yellow: 'from-yellow-600/30 to-yellow-600/5 border-theme-warning text-theme-warning',
+    green: 'from-green-600/30 to-green-600/5 border-theme-success text-theme-success',
+    red: 'from-red-600/30 to-red-600/5 border-theme-error text-theme-error'
   };
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      className={`bg-theme-bg-surface ${colors[color]} border rounded-3xl p-6`}
+      className={`bg-gradient-to-br ${colors[color]} border-2 rounded-3xl p-6`}
     >
       <div className="flex items-start gap-4 mb-4">
-        <div className={`${colors[color].split(' ')[1]}`}>
+        <div className={`${colors[color].split(' ')[2]}`}>
           {icon}
         </div>
         <div className="text-3xl font-semibold text-theme-text-primary mb-1">{value}</div>
       </div>
-      <div className="text-md text-theme-text-secondary">{title}</div>
+      <div className="text-lg text-theme-text-muted">{title}</div>
     </motion.div>
   );
 }
