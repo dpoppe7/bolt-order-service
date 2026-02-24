@@ -38,7 +38,7 @@ export function NavBar({view, onViewChange, onHeightChange}: NavbarProps) {
 
     return (
     <header ref={headerRef} className="fixed top-0 left-0 w-full z-50 bg-theme-bg-primary">
-        <div className="justify-between flex items-center max-w-7xl mx-auto px-4 sm:px-6 py-3 ">
+        <div className="justify-between flex items-center max-w-7xl mx-auto px-4 sm:px-6 py-4 ">
             {/* Logo/Title */}
             <div className="font-jost text-lg font-medium uppercase text-theme-text-secondary">
                 Bolt Order Service

@@ -102,7 +102,8 @@ function AdminDashboard({ backendUrl }: AdminDashboardProps) {
           </div>
           <button
             onClick={fetchOrders}
-            className="flex items-center gap-2 px-4 py-2 bg-theme-accent-primary hover:bg-theme-accent-primary-muted text-white rounded-3xl transition-colors uppercase"
+            className="flex items-center gap-2 px-4 py-2 bg-theme-bg-surface hover:bg-theme-bg-surface-muted border-2 border-theme-border-subtle  
+            text-theme-text-muted hover:text-theme-text-primary text-sm font-semibold rounded-3xl transition-colors uppercase"
           >
             <RefreshCw size={18} />
             Refresh

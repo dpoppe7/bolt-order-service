@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Package } from 'lucide-react';
+import { Package, Edit3 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import type { Product } from './AdminDashboard';
 
@@ -44,52 +44,90 @@ export function InventoryManager({ backendUrl }: { backendUrl: string }) {
   return (
     <div className="space-y-8">
       {/* Action Bar */}
-      <div className="flex justify-between items-center bg-slate-900/50 p-6 rounded-2xl border border-slate-800">
-        <h2 className="text-xl font-medium text-white">Product Catalog</h2>
-        {/* Trigger a Dialog/Modal here */}
+      <div className="flex justify-between items-center pb-6 pt-6">
+        <h2 className="text-2xl font-semibold text-theme-text-primary uppercase">Product Catalog</h2>
+        {/* Trigger a Dialog/Modal */}
         <button 
           onClick={() => setShowForm(!showForm)}
-          className="bg-purple-600 hover:bg-purple-500 text-white px-5 py-2 rounded-lg font-semibold transition-all"
+          className="px-4 py-2 flex items-center gap-2 bg-theme-accent-primary hover:bg-theme-accent-primary-muted border-2 border-theme-border-focus  
+            text-white text-sm font-semibold rounded-3xl transition-colors uppercase"
         >
           {showForm ? 'Close Form' : '+ New Product'}
         </button>
       </div>
 
       {/* The Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {products.map(product => (
-          <div key={product.id} className="group bg-slate-800/40 border border-slate-700 rounded-2xl overflow-hidden hover:border-purple-500/50 transition-all">
-            {/* Image Section */}
-            <div className="h-48 bg-slate-900 flex items-center justify-center relative">
-              {product.imageUrl ? (
-                <img src={product.imageUrl} className="w-full h-full object-cover" alt={product.name} />
-              ) : (
-                <div className="text-slate-700 flex flex-col items-center">
-                  <Package size={40} />
-                  <span className="text-xs mt-2 uppercase tracking-widest">No Image</span>
-                </div>
-              )}
-            </div>
-
-            {/* Info Section */}
-            <div className="p-5">
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="font-bold text-white text-lg">{product.name}</h3>
-                <span className="text-purple-400 font-bold">${product.price}</span>
-              </div>
-              <p className="text-slate-500 text-xs font-mono mb-4">{product.id}</p>
-              
-              <div className="flex items-center justify-between pt-4 border-t border-slate-700/50">
-                <span className={`text-sm ${product.stock < 10 ? 'text-red-400' : 'text-slate-400'}`}>
-                  {product.stock} in stock
-                </span>
-                <button className="text-slate-400 hover:text-white text-sm font-medium">Edit Details</button>
-              </div>
-            </div>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {products.map((product, index) => (
+          <InventoryItemCard 
+            key={product.id} 
+            product={product} 
+            index={index} 
+          />
         ))}
       </div>
     </div>
+  );
+}
+
+export function InventoryItemCard({ product, index }: {product: Product, index: number}) {
+  const isLowStock = product.stock < 10;
+  const isOutOfStock = product.stock <= 0;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.05 }}
+      className="group relative"
+    >
+      {/* Glow Accent */}
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-theme-accent-primary to-theme-accent-secondary rounded-3xl opacity-0 group-hover:opacity-100 blur transition duration-500" />
+      
+      <div className="relative bg-theme-bg-secondary backdrop-blur-xl border border-theme-border-subtle rounded-3xl overflow-hidden hover:border-theme-border-focus transition-all">
+        {/* Image Section */}
+        <div className="h-48 bg-theme-bg-surface flex items-center justify-center relative border-b border-theme-border-subtle">
+          {product.imageUrl ? (
+            <img src={product.imageUrl} className="w-full h-full object-cover" alt={product.name} />
+          ) : (
+            <div className="text-theme-text-muted flex flex-col items-center">
+              <Package size={40} />
+              <span className="text-xs mt-2 uppercase tracking-widest font-semibold">No Image</span>
+            </div>
+          )}
+        </div>
+
+        {/* Info Section */}
+        <div className="p-5">
+          <div className="flex justify-between items-start mb-2">
+            <h3 className="text-base font-bold text-theme-text-primary uppercase">{product.name}</h3>
+            <span className="text-theme-accent-secondary font-bold text-lg">
+              ${product.price?.toFixed(2)}
+            </span>
+          </div>
+          
+          <p className="text-theme-text-muted text-xs font-mono mb-4 bg-theme-bg-surface px-2 py-1 rounded inline-block">
+            ID: {product.id}
+          </p>
+          
+          <div className="flex items-center justify-between pt-4 border-t border-theme-border-subtle">
+            {/* Dynamic Stock Badge */}
+            <span className={`text-sm font-semibold flex items-center gap-2 ${
+              isOutOfStock ? 'text-theme-error' : isLowStock ? 'text-theme-warning' : 'text-theme-success'
+            }`}>
+              <div className={`h-2 w-2 rounded-full bg-current ${!isOutOfStock && 'animate-pulse'}`} />
+              {product.stock} in stock
+            </span>
+            
+            <button className="flex items-center gap-1 text-theme-text-muted hover:text-theme-text-primary text-base font-medium transition-colors">
+              <Edit3 size={14} />
+              Edit Details
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </motion.div>
   );
 }
 
