@@ -56,7 +56,7 @@ export function NavBar({view, onViewChange, onHeightChange}: NavbarProps) {
                 </button>
 
                 {/* View Toggle */}
-                <div className="flex gap-2 bg-theme-bg-secondary backdrop-blur-xl rounded-full p-1 border-1 border-theme-border-subtle">
+                <div className="flex gap-2 bg-theme-bg-secondary backdrop-blur-xl rounded-full p-1 border-2 border-theme-border-subtle">
                     <button
                         onClick={() => onViewChange('customer')}
                         className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all ${

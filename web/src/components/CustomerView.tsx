@@ -105,15 +105,15 @@ function CustomerView({ backendUrl, navHeight }: CustomerViewProps) {
           animate={{ opacity: 1, y: 0 }}
           className="text-left mb-12"
         >
-          <p className="text-xl sm:text-lg text-theme-text-primary uppercase">
+          <p className="text-xl sm:text-lg font-semibold text-theme-text-primary uppercase">
             <span className='text-theme-accent-orange'>Fast order processing</span> powered by Redis & BullMQ.
           </p>
         </motion.div>
 
         {/* Products Sticky Title */}
         <div 
-          className={`mb-5 pt-3 pb-3 text-xl text-white font-medium uppercase
-            ${isFixed ? 'fixed left-0 right-0 z-40 bg-theme-accent-blue border-b border-theme-border-subtle' : ''}`}
+          className={`mb-5 pt-3 pb-3 text-xl text-theme-text-primary font-medium uppercase
+            ${isFixed ? 'fixed left-0 right-0 z-40 text-white bg-theme-accent-blue border-b border-theme-border-subtle' : ''}`}
           style={isFixed ? { top: navHeight } : {}}
         >
           {/* If Fixed, add a container inside to keep it from stretching to the screen edges */}
@@ -152,7 +152,7 @@ interface ProductCardProps {
 
 function ProductCard({ product, status, onOrder, index }: ProductCardProps) {
   const isOutOfStock = product.stock <= 0;
-  const isLowStock = product.stock > 0 && product.stock <= 5;
+  const isLowStock = product.stock > 0 && product.stock <= 10;
 
   return (
     <motion.div
@@ -162,20 +162,9 @@ function ProductCard({ product, status, onOrder, index }: ProductCardProps) {
       className="group relative"
     >
       {/* Glow effect on hover */}
-      <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl opacity-0 group-hover:opacity-100 blur transition duration-500" />
+      <div className="absolute -inset-0.5 bg-gradient-to-r from-theme-accent-blue to-theme-accent-orange rounded-2xl opacity-0 group-hover:opacity-100 blur transition duration-500" />
       
-      <div className="relative bg-slate-800/80 backdrop-blur-xl border border-slate-700 rounded-2xl p-6 hover:border-slate-600 transition-all">
-        {/* Product Icon */}
-        <div className="w-16 h-16 bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-xl flex items-center justify-center mb-4">
-          <Package size={32} className="text-blue-400" />
-        </div>
-
-        {/* Product Info */}
-        <div className="mb-4">
-          <h3 className="text-xl font-bold text-white mb-1">{product.name}</h3>
-          <p className="text-sm text-slate-500 uppercase tracking-wider">{product.id}</p>
-        </div>
-
+      <div className="relative bg-theme-bg-secondary backdrop-blur-xl border border-theme-border-subtle rounded-2xl p-6 hover:border-theme-border-focus transition-all">
         {/* Stock Badge */}
         <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-4 ${
           isOutOfStock 
@@ -187,9 +176,20 @@ function ProductCard({ product, status, onOrder, index }: ProductCardProps) {
           <div className={`h-2 w-2 rounded-full ${
             isOutOfStock ? 'bg-red-500' : isLowStock ? 'bg-yellow-500 animate-pulse' : 'bg-green-500 animate-pulse'
           }`} />
-          <span className="text-xs font-mono text-white">
+          <span className="text-xs font-mono text-theme-text-primary uppercase">
             {isOutOfStock ? 'Out of Stock' : `${product.stock} in stock`}
           </span>
+        </div>
+
+        {/* Product Icon */}
+        <div className="w-16 h-16 bg-gradient-to-br from-blue-600/20 to-purple-600/20 rounded-xl flex items-center justify-center mb-4">
+          <Package size={32} className="text-blue-400" />
+        </div>
+
+        {/* Product Info */}
+        <div className="mb-4">
+          <p className="text-sm text-theme-text-secondary uppercase tracking-wider">{product.id}</p>
+          <h3 className="text-lg font-semibold text-theme-text-primary mb-1 uppercase">{product.name}</h3>
         </div>
 
         {/* Order Button */}
@@ -203,7 +203,7 @@ function ProductCard({ product, status, onOrder, index }: ProductCardProps) {
               ? 'bg-red-600 text-white'
               : isOutOfStock
               ? 'bg-slate-700 text-slate-500 cursor-not-allowed'
-              : 'bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg hover:shadow-blue-600/50 hover:scale-[1.02] active:scale-95'
+              : 'bg-gradient-to-r from-theme-accent-blue to-theme-accent-orange text-white hover:shadow-lg hover:shadow-blue-600/50 hover:scale-[1.02] active:scale-95 uppercase'
           }`}
         >
           <AnimatePresence mode="wait">

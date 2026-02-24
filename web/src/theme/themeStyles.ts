@@ -63,7 +63,7 @@ export const lightTheme: Theme = {
   border: {
     default: '#e2e8f0',
     subtle: '#D2C5C1',
-    focus: '#3b82f6',
+    focus: '#677BD8',
   },
 };
 
@@ -95,6 +95,6 @@ export const darkTheme: Theme = {
   border: {
     default: '#1e293b',
     subtle: '#312B2D',
-    focus: '#3b82f6',
+    focus: '#677BD8',
   },
 };
