@@ -42,7 +42,7 @@ export const lightTheme: Theme = {
     secondary: '#F0E7E2',
     surface: '#E0D5CF',
     surfaceMuted: '#D7CCC8',
-    overlay: 'rgba(255,255,255,0.85)',
+    overlay: 'rgba(230,220,215,0.85)',
   },
   text: {
     primary: '#0f172a',
@@ -75,7 +75,7 @@ export const darkTheme: Theme = {
     secondary: '#171415',  
     surface: '#1F1C1D',    
     surfaceMuted: '#27272a',
-    overlay: 'rgba(15,23,42,0.85)',
+    overlay: 'rgba(21,22,25,0.85)',
   },
   text: {
     primary: '#f8fafc',
