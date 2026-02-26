@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Package, Edit3, Upload } from 'lucide-react';
+import { Package, Edit3, Upload, ChevronDown } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { Product } from './AdminDashboard';
 
@@ -9,8 +9,8 @@ export function InventoryManager({ backendUrl }: { backendUrl: string }) {
   const [showForm, setShowForm] = useState(false);
 
   const form = {
-    inputText: 'w-full bg-theme-bg-surface placeholder-theme-text-secondary text-theme-text-primar border border-theme-border-subtle rounded-lg p-2',
-    label: 'text-theme-text-primary uppercase font-semibold text-sm'
+    inputText: 'w-full bg-theme-bg-surface placeholder-theme-text-secondary text-theme-text-primary border border-theme-border-subtle rounded-lg p-2',
+    label: 'text-theme-text-primary uppercase font-semibold text-sm',
   };
   
   // Fetch products specifically for this view
@@ -67,7 +67,7 @@ export function InventoryManager({ backendUrl }: { backendUrl: string }) {
               className="relative z-10 w-[60%] max-w-xl md:max-w-full bg-theme-bg-secondary border-2 border-theme-border-focus rounded-3xl shadow-2xl px-10 py-12 overflow-y-auto"
             >
               <div className="flex justify-between items-center mb-10">
-                <h2 className="text-xl font-bold text-theme-accent-secondary uppercase">Add Product</h2>
+                <h2 className="text-xl font-bold text-theme-accent-secondary uppercase">Add new Product</h2>
                 <button 
                   onClick={() => setShowForm(false)}
                   className="text-theme-text-muted hover:text-theme-text-primary transition-colors"
@@ -87,22 +87,34 @@ export function InventoryManager({ backendUrl }: { backendUrl: string }) {
                   <input id="form-product-id" type="text" placeholder='Enter an ID' className={form.inputText}/>
 
                   <p className={form.label}>Stock:</p>
-                  <input id="form-product-stock" type="text" placeholder='Enter available Stock' className={form.inputText}/>
+                  <input id="form-product-stock" type="text" placeholder='Enter available stock' className={form.inputText}/>
 
                   <p className={form.label}>Price:</p>
-                  <input id="form-product-price" type="text" placeholder='Enter product Price' className={form.inputText}/>
+                  <div className='flex items-center bg-theme-bg-surface border border-theme-border-subtle rounded-lg p-2'>
+                    <span className="text-theme-text-primary font-semibold">$</span>
+                    <input id="form-product-price" type="text" placeholder='0.00' className='w-full bg-transparent placeholder-theme-text-muted text-base text-theme-text-primary outline-none px-2'/>
+                    <div className='relative grid grid-cols-1 items-center shrink-0 focus-within:relative text-theme-text-muted'>
+                      <select className='col-start-1 row-start-1 appearance-none bg-transparent pr-6 text-sm font-semibold outline-none cursor-pointer'>
+                        <option>USD</option>
+                        <option>EUR</option>
+                      </select>
+                      
+                      <ChevronDown size={24} className='col-start-1 row-start-1 justify-self-end pointer-events-none'/>
+                    </div>
+                  </div>
+
                 </div>
 
                 {/* Right Column Data (Desktop) */}
                 <div className='space-y-4'>
                   <p className={form.label}>Product Image:</p>
-                  <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 bg-theme-bg-surface border-2 border-dashed rounded-2xl cursor-pointer hover:bg-theme-bg-surface-muted">
+                  <label htmlFor="form-dropzone-file" className="flex flex-col items-center justify-center w-full h-64 bg-theme-bg-surface border-2 border-dashed border-theme-border-focus rounded-2xl cursor-pointer hover:bg-theme-bg-surface-muted">
                       <div className="flex flex-col items-center justify-center text-theme-text-secondary pt-5 pb-6">
                           <Upload size={24}/>
                           <p className="mb-2 text-sm"><span className="font-semibold">Click to upload</span> or drag and drop</p>
                           <p className="text-xs">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                       </div>
-                      <input id="dropzone-file" type="file" className="hidden" />
+                      <input id="form-image-file" type="file" className="hidden" />
                   </label>
                   <p className={`${form.label} flex justify-center text-theme-text-secondary`}>OR</p>
                   <input id="form-image-link" type="text" placeholder='Enter an image URL' className={form.inputText}/>
